@@ -1,5 +1,6 @@
 import React from "react";
-import { LuInfo, LuMenu, LuMoon, LuSun } from "react-icons/lu";
+import ThemeToggle from "./theme/toggle";
+import { LuInfo, LuMenu } from "react-icons/lu";
 
 export default function header() {
   const titlePrefix = "sorting";
@@ -8,7 +9,7 @@ export default function header() {
     <header className="navbar bg-base-100">
       <div className="navbar-start">
         <div className="dropdown">
-          <label tabIndex={0} className="btn btn-circle btn-ghost">
+          <label tabIndex={0} className="btn btn-circle btn-ghost text-xl">
             <LuMenu />
           </label>
           <ul
@@ -30,7 +31,7 @@ export default function header() {
       <div className="navbar-center">
         <div className="dropdown">
           <h1 className="btn btn-ghost text-xl normal-case" tabIndex={0}>
-            <span className="text-accent">{titlePrefix}</span>
+            <span className="text-accent-focus">{titlePrefix}</span>
             visualizer
           </h1>
           <ul
@@ -44,12 +45,10 @@ export default function header() {
         </div>
       </div>
       <div className="navbar-end">
-        <button className="btn btn-circle btn-ghost text-lg">
+        <button className="btn btn-circle btn-ghost text-xl">
           <LuInfo />
         </button>
-        <button className="btn btn-circle btn-ghost text-lg">
-          <LuMoon />
-        </button>
+        <ThemeToggle />
       </div>
     </header>
   );
