@@ -6,7 +6,7 @@ export default function header() {
   const titlePrefix = "sorting";
 
   return (
-    <header className="navbar bg-base-100">
+    <header className="navbar absolute bg-base-100">
       <div className="navbar-start">
         <a
           href="https://github.com/qkrwns/algorithm-visualizer"
