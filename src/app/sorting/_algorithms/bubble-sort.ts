@@ -1,26 +1,21 @@
-import { delay } from "@/app/lib/utils";
-import { SortingPageState } from "../_utils/sorting-state";
+import type { SortingAnimation } from "../_utils/types";
 
-export async function bubbleSort(workingArray: SortingPageState.workingArray) {
-  arrayStatus.isSorting = true;
+export function bubbleSort<T>(array: T[]) {
+  const animations: SortingAnimation[] = [];
 
-  while (arrayStatus.isSorting) {
-    for (let i = workingArray.length - 1; i > 0; i--) {
-      let noSwaps = true;
-      for (let j = 0; j < i; j++) {
-        if (workingArray[j] > workingArray[j + 1]) {
-          await delay(() => {
-            [workingArray[j], workingArray[j + 1]] = [
-              workingArray[j + 1],
-              workingArray[j],
-            ];
-          }, interval);
-          noSwaps = false;
-        }
+  for (let i = array.length - 1; i > 0; i--) {
+    let noSwaps = true;
+    for (let j = 0; j < i; j++) {
+      animations.push({ operation: "COMPARE", indices: [j, j + 1] });
+      if (array[j] > array[j + 1]) {
+        [array[j], array[j + 1]] = [array[j + 1], array[j]];
+        noSwaps = false;
+        animations.push({ operation: "SWAP", indices: [j, j + 1] });
       }
-      if (noSwaps) break;
-      arrayStatus.isSorting = false;
-      arrayStatus.sortOrder = "LOW_HIGH";
     }
+    if (noSwaps) break;
   }
+  return animations;
 }
+
+console.log(bubbleSort([1, 4, 3, 6, 2]));

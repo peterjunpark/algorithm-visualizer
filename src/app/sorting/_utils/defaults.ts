@@ -1,4 +1,4 @@
-const ARRAY_LENGTH = 20;
+const ARRAY_LENGTH = 30;
 const ARRAY_MIN_VALUE = 1;
 const ARRAY_MAX_VALUE = 100;
 const ANIMATION_INTERVAL = 100; //ms
