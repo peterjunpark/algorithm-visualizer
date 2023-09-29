@@ -1,7 +1,7 @@
 // sortingUtils.js
 import { useState, useCallback } from "react";
 import { ARRAY_MIN_VALUE, ARRAY_MAX_VALUE } from "./defaults";
-import { rng } from "@/app/lib/utils";
+import { rng } from "@/lib/utils";
 
 export interface SortingPageState {
   initialArray: number[];

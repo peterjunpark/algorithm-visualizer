@@ -21,7 +21,7 @@ export default function ThemeToggle() {
           className="btn btn-circle btn-ghost text-xl"
           onClick={() => setTheme("corporate")}
         >
-          <LuMoon />
+          <LuSun />
         </button>
       ) : (
         <button
@@ -30,7 +30,7 @@ export default function ThemeToggle() {
             setTheme("business");
           }}
         >
-          <LuSun />
+          <LuMoon />
         </button>
       )}
     </>
