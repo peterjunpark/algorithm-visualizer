@@ -1,22 +1,22 @@
 "use client";
 
 import React, { useEffect } from "react";
+import clsx from "clsx";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSortingState } from "./_utils/sorting-state";
 import { ARRAY_LENGTH, ANIMATION_INTERVAL } from "./_utils/defaults";
 import ArrayElement from "./_components/array-element";
 import { bubbleSort } from "./_algorithms/bubble-sort";
 
-import { delay } from "@/lib/utils";
-
-import { LuPlay, LuUndo2, LuRotateCcw, LuComputer } from "react-icons/lu";
+import { LuPlay, LuUndo2, LuRotateCcw } from "react-icons/lu";
 
 export default function SortingPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { state, setState, generateArray, unsort } = useSortingState();
 
-  const arrayLengthParam = searchParams.get("arrayLength");
+  const sortingAlgorithm = searchParams.get("sort");
+  const arrayLengthParam = searchParams.get("len");
   const intervalParam = searchParams.get("interval");
   const arrayLength = arrayLengthParam
     ? parseInt(arrayLengthParam, 10)
@@ -29,6 +29,18 @@ export default function SortingPage() {
     generateArray(arrayLength);
   }, [arrayLength, generateArray]);
 
+  const handleChooseAlgorithm = (
+    algorithm:
+      | "bubble"
+      | "insertion"
+      | "selection"
+      | "merge"
+      | "quick"
+      | "radix",
+  ) => {
+    router.push(`?sort=${algorithm}&len=${arrayLength}`);
+  };
+
   const handleBubbleSort = () => {
     const animations = bubbleSort(state.workingArray);
 
@@ -40,22 +52,64 @@ export default function SortingPage() {
   };
 
   return (
-    <div className="h-screen">
-      <ul className="menu rounded-box my-2 flex w-3/4 items-center justify-around bg-base-200 opacity-80 lg:menu-horizontal">
-        <select className="select select-sm w-full max-w-xs">
+    <div className="flex flex-col justify-between">
+      <ul className="menu rounded-box absolute left-2 z-50 m-3 flex items-center justify-around bg-base-200 opacity-75">
+        <select className="select select-sm w-fit lg:my-0">
           <option disabled selected>
             Choose a sorting algorithm
           </option>
-          <option>Bubble sort</option>
-          <option>Insertion sort</option>
-          <option>Selection sort</option>
-          <option>Merge sort</option>
-          <option>Quick sort</option>
-          <option>Radix sort</option>
+          <option
+            onClick={() => {
+              handleChooseAlgorithm("bubble");
+            }}
+          >
+            Bubble sort
+          </option>
+          <option
+            onClick={() => {
+              handleChooseAlgorithm("insertion");
+            }}
+          >
+            Insertion sort
+          </option>
+          <option
+            onClick={() => {
+              handleChooseAlgorithm("selection");
+            }}
+          >
+            Selection sort
+          </option>
+          <option
+            onClick={() => {
+              handleChooseAlgorithm("merge");
+            }}
+          >
+            Merge sort
+          </option>
+          <option
+            onClick={() => {
+              handleChooseAlgorithm("quick");
+            }}
+          >
+            Quick sort
+          </option>
+          <option
+            onClick={() => {
+              handleChooseAlgorithm("radix");
+            }}
+          >
+            Radix sort
+          </option>
         </select>
-        <LuComputer className="mx-4 text-2xl text-secondary" />
-        <li>
-          <button onClick={handleBubbleSort}>
+        <li className={clsx(sortingAlgorithm === null && "disabled")}>
+          <button
+            onClick={handleBubbleSort}
+            className={clsx(
+              "mt-2",
+              sortingAlgorithm === null && "cursor-not-allowed",
+            )}
+            disabled={sortingAlgorithm === null}
+          >
             <LuPlay />
             Sort
           </button>
@@ -83,7 +137,7 @@ export default function SortingPage() {
           </button>
         </li>
       </ul>
-      <div className="mx-2 flex h-3/4 items-end border border-primary-content">
+      <div className="mx-2 flex h-screen items-end">
         {state.workingArray.map((value, index) => (
           <ArrayElement key={index} {...{ index, value }} />
         ))}

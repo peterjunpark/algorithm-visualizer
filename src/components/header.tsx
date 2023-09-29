@@ -1,6 +1,6 @@
 import React from "react";
 import ThemeToggle from "./theme/toggle";
-import { LuInfo, LuMenu } from "react-icons/lu";
+import { LuGithub, LuInfo } from "react-icons/lu";
 
 export default function header() {
   const titlePrefix = "sorting";
@@ -8,25 +8,13 @@ export default function header() {
   return (
     <header className="navbar bg-base-100">
       <div className="navbar-start">
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-circle btn-ghost text-xl">
-            <LuMenu />
-          </label>
-          <ul
-            tabIndex={0}
-            className="menu dropdown-content rounded-box menu-sm z-[1] mt-3 w-52 bg-base-100 p-2 shadow"
-          >
-            <li>
-              <a>Homepage</a>
-            </li>
-            <li>
-              <a>Portfolio</a>
-            </li>
-            <li>
-              <a>About</a>
-            </li>
-          </ul>
-        </div>
+        <a
+          href="https://github.com/qkrwns/algorithm-visualizer"
+          target="_blank"
+          className="btn btn-circle btn-ghost text-xl"
+        >
+          <LuGithub />
+        </a>
       </div>
       <div className="navbar-center">
         <div className="dropdown">
