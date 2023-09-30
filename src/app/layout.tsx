@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import clsx from "clsx";
 import ThemeProvider from "../components/theme/provider";
+import Header from "@/components/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={clsx("h-screen", inter.className)}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <Header home />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

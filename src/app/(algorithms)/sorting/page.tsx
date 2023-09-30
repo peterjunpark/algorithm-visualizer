@@ -3,24 +3,39 @@
 import React, { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSortingState } from "./_utils/sorting-state";
-import { ARRAY_LENGTH, ANIMATION_INTERVAL } from "./_utils/defaults";
+import { splenMap } from "./_utils/defaults";
 import ArrayElement from "./_components/array-element";
 import { bubbleSort } from "./_algorithms/bubble-sort";
 import ControlPanel from "./_components/control-panel";
 
 export default function SortingPage() {
-  const searchParams = useSearchParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const sortParam = searchParams.get("sort");
+  const splenParam = searchParams.get("splen");
   const { state, setState, generateArray, unsort } = useSortingState();
 
-  const arrayLengthParam = searchParams.get("len");
-  const intervalParam = searchParams.get("interval");
-  const arrayLength = arrayLengthParam
-    ? parseInt(arrayLengthParam, 10)
-    : ARRAY_LENGTH;
-  const interval = intervalParam
-    ? parseInt(intervalParam, 10)
-    : ANIMATION_INTERVAL;
+  let animationInterval = 500;
+  let arrayLength = 16;
+
+  switch (splenParam) {
+    case "0":
+      break;
+    case "1":
+      animationInterval -= 100;
+      arrayLength *= 3;
+      break;
+    case "2":
+      animationInterval -= 200;
+      arrayLength *= 9;
+      break;
+    case "3":
+      animationInterval -= 300;
+      arrayLength *= 27;
+      break;
+    default:
+      router.push(`?sort=${sortParam}&splen=2`);
+  }
 
   useEffect(() => {
     generateArray(arrayLength);
