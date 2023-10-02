@@ -1,9 +1,8 @@
 // sortingUtils.js
 import { useState, useCallback } from "react";
-import { ARRAY_MIN_VALUE, ARRAY_MAX_VALUE } from "./defaults";
 import { rng } from "@/lib/utils";
 
-export interface SortingPageState {
+interface SortingPageState {
   initialArray: number[];
   workingArray: number[];
   arrayStatus: {
@@ -11,6 +10,10 @@ export interface SortingPageState {
     sortOrder: "UNSORTED" | "LOW_HIGH" | "HIGH_LOW";
   };
 }
+
+// function sortingReducer(state, action) {
+//   if (action.type === "reset")
+// }
 
 export function useSortingState() {
   const [state, setState] = useState<SortingPageState>({
@@ -38,7 +41,7 @@ export function useSortingState() {
       const newArray: number[] = [];
 
       for (let i = 0; i < arrayLength; i++) {
-        newArray.push(rng(ARRAY_MIN_VALUE, ARRAY_MAX_VALUE));
+        newArray.push(rng(1, 100));
       }
 
       setState((prevState) => ({

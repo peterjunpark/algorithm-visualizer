@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import clsx from "clsx";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useSortingState } from "../_utils/sorting-state";
-import type { Algorithm } from "../_utils/types";
+import { useRouter } from "next/navigation";
+import type { Algorithm, Splen } from "../_utils/types";
 import {
   LuPlay,
   LuUndo2,
@@ -17,23 +16,23 @@ import {
 } from "react-icons/lu";
 
 type ControlPanelProps = {
-  animationHandler: () => void;
+  splenParam: Splen;
+  sortParam: Algorithm | null;
+  arrayLength: number;
+  handleAnimate: () => void;
+  handleRandomize: (arrayLength: number) => void;
+  handleUnsort: () => void;
 };
 
-export default function ControlPanel({ animationHandler }: ControlPanelProps) {
+export default function ControlPanel({
+  sortParam,
+  splenParam,
+  arrayLength,
+  handleAnimate,
+  handleRandomize,
+  handleUnsort,
+}: ControlPanelProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const sortParam = searchParams.get("sort");
-  const splenParam = searchParams.get("splen");
-
-  const { state, setState, generateArray, unsort } = useSortingState();
-
-  const handleSelectAlgorithm = (algorithm: Algorithm) => {
-    router.push(`?sort=${algorithm}&splen=${splenParam}`);
-  };
-  const handleSelectSplen = (splen: number) => {
-    router.push(`?sort=${sortParam}&splen=${splen}`);
-  };
 
   const algorithmOptions: Algorithm[] = [
     "BUBBLE",
@@ -50,12 +49,14 @@ export default function ControlPanel({ animationHandler }: ControlPanelProps) {
     <LuSignal key={3} />,
   ];
 
-  // useEffect(() => {
-  //   // if (sortParam)
-  //   if (typeof splenParam !== "number" || splenParam > 3) {
-  //     handleSelectSplen(2);
-  //   }
-  // }, [splenParam, handleSelectSplen]);
+  const handleSelectAlgorithm = (algorithm: Algorithm) => {
+    router.push(`?sort=${algorithm}&splen=${splenParam}`);
+  };
+  const handleSelectSplen = (splen: Splen) => {
+    router.push(
+      sortParam ? `?sort=${sortParam}&splen=${splen}` : `?splen=${splen}`,
+    );
+  };
 
   return (
     <div className="menu rounded-box absolute left-1/2 z-50 my-3 flex w-max -translate-x-1/2 transform items-center justify-around bg-base-200 bg-opacity-80 px-3 md:left-2 md:m-3 md:transform-none">
@@ -63,7 +64,7 @@ export default function ControlPanel({ animationHandler }: ControlPanelProps) {
         <select
           onChange={(e) => handleSelectAlgorithm(e.target.value as Algorithm)}
           className="select select-sm m-2 w-fit"
-          defaultValue="default"
+          defaultValue={sortParam ? sortParam : "default"}
         >
           <option value="default" disabled>
             Select an algorithm
@@ -77,7 +78,7 @@ export default function ControlPanel({ animationHandler }: ControlPanelProps) {
         </select>
         <li className={clsx(sortParam === null && "disabled")}>
           <button
-            onClick={animationHandler}
+            onClick={handleAnimate}
             className={clsx(sortParam === null && "cursor-not-allowed")}
             disabled={sortParam === null}
           >
@@ -88,21 +89,15 @@ export default function ControlPanel({ animationHandler }: ControlPanelProps) {
       </div>
       <ul className="flex w-full justify-between">
         <li>
-          <button
-            onClick={() => {
-              unsort();
-              console.log(state);
-            }}
-          >
+          <button onClick={handleUnsort}>
             <LuUndo2 />
-            Reset array
+            Unsort array
           </button>
         </li>
         <li>
           <button
             onClick={() => {
-              // generateArray(arrayLength);
-              console.log(state);
+              handleRandomize(arrayLength);
             }}
           >
             <LuRotateCcw />
@@ -118,7 +113,7 @@ export default function ControlPanel({ animationHandler }: ControlPanelProps) {
         <div className="join">
           {splenOptions.map((option, index) => (
             <button
-              onClick={() => handleSelectSplen(index)}
+              onClick={() => handleSelectSplen(index.toString() as Splen)}
               className={clsx(
                 "btn btn-outline join-item btn-sm text-xl",
                 parseInt(splenParam as string) === index && "btn-active",

@@ -30,10 +30,12 @@ export default function Home() {
         </div>
         <div className="collapse-content flex justify-around">
           <nav tabIndex={0}>
-            <ul className="flex gap-4 text-4xl">
+            <ul className="flex gap-8 text-4xl">
               {pages.map((page, index) => (
                 <li key={index}>
-                  <Link href={page[1]}>{page[0]}</Link>
+                  <Link href={page[1]} className="link hover:text-accent">
+                    {page[0]}
+                  </Link>
                 </li>
               ))}
             </ul>

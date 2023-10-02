@@ -1,67 +1,65 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSortingState } from "./_utils/sorting-state";
-import { splenMap } from "./_utils/defaults";
+import { getSortingOptions } from "./_utils";
+import type { Algorithm, Splen } from "./_utils/types";
 import ArrayElement from "./_components/array-element";
-import { bubbleSort } from "./_algorithms/bubble-sort";
 import ControlPanel from "./_components/control-panel";
+import { rng } from "@/lib/utils";
+import { bubbleSort } from "./_algorithms/bubble-sort";
 
 export default function SortingPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sortParam = searchParams.get("sort");
   const splenParam = searchParams.get("splen");
-  const { state, setState, generateArray, unsort } = useSortingState();
+  const { animationInterval, arrayLength } = getSortingOptions(
+    splenParam,
+    sortParam,
+    router,
+  );
 
-  let animationInterval = 500;
-  let arrayLength = 16;
+  const [array, setArray] = useState<number[]>([]);
+  const arrayRef = useRef<number[]>([]);
 
-  switch (splenParam) {
-    case "0":
-      break;
-    case "1":
-      animationInterval -= 100;
-      arrayLength *= 3;
-      break;
-    case "2":
-      animationInterval -= 200;
-      arrayLength *= 9;
-      break;
-    case "3":
-      animationInterval -= 300;
-      arrayLength *= 27;
-      break;
-    default:
-      router.push(`?sort=${sortParam}&splen=2`);
-  }
+  const unsortArray = useCallback(() => {
+    setArray(arrayRef.current);
+  }, []);
 
-  useEffect(() => {
-    generateArray(arrayLength);
-  }, [arrayLength, generateArray]);
-
-  const animateBubbleSort = () => {
-    const animations = bubbleSort(state.workingArray);
-
-    animations.forEach((animation, index) => {
-      if (animation.operation === "COMPARE") {
+  const randomizeArray = useCallback(
+    (arrayLength: number) => {
+      const newArray: number[] = [];
+      for (let i = 0; i < arrayLength; i++) {
+        newArray.push(rng(1, 100));
       }
-    });
-    console.log(animations);
+
+      arrayRef.current = newArray;
+      unsortArray();
+    },
+    [unsortArray],
+  );
+
+  const animateArray = () => {
+    console.log({ ref: arrayRef.current, array });
   };
 
-  const animateInsertionSort = () => {};
-  const animateSelectionSort = () => {};
-  const animateMergeSort = () => {};
-  const animateQuickSort = () => {};
-  const animateRadixSort = () => {};
+  useEffect(() => {
+    randomizeArray(arrayLength);
+  }, [arrayLength, randomizeArray]);
 
   return (
     <main className="h-full pt-14">
-      <ControlPanel animationHandler={animateBubbleSort} />
+      <ControlPanel
+        sortParam={sortParam ? (sortParam as Algorithm) : null}
+        splenParam={splenParam as Splen}
+        arrayLength={arrayLength}
+        handleAnimate={animateArray}
+        handleRandomize={randomizeArray}
+        handleUnsort={unsortArray}
+      />
       <div className="mx-2 flex h-full items-end">
-        {state.workingArray.map((value, index) => (
+        {array.map((value, index) => (
           <ArrayElement key={index} {...{ index, value }} />
         ))}
       </div>

@@ -10,3 +10,5 @@ export type Algorithm =
   | "MERGE"
   | "QUICK"
   | "RADIX";
+
+export type Splen = "0" | "1" | "2" | "3";

@@ -2,6 +2,7 @@ import React from "react";
 import clsx from "clsx";
 
 type ArrayElementProps = {
+  // ref: React.RefObject<any>;
   value: number;
   index: number;
 };
