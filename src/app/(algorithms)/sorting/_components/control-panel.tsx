@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import clsx from "clsx";
+import { clsx } from "clsx";
 import { useRouter } from "next/navigation";
-import type { Algorithm, Splen } from "../_utils/types";
+import type { Algorithm, Magnitude } from "../_utils/types";
 import {
   LuPlay,
   LuUndo2,
@@ -16,21 +16,19 @@ import {
 } from "react-icons/lu";
 
 type ControlPanelProps = {
-  splenParam: Splen;
-  sortParam: Algorithm | null;
-  arrayLength: number;
+  magnitudeParam: Magnitude;
+  algorithmParam: Algorithm | null;
   handleAnimate: () => void;
-  handleRandomize: (arrayLength: number) => void;
-  handleUnsort: () => void;
+  handleRandomize: () => void;
+  handleReset: () => void;
 };
 
 export default function ControlPanel({
-  sortParam,
-  splenParam,
-  arrayLength,
+  algorithmParam,
+  magnitudeParam,
   handleAnimate,
   handleRandomize,
-  handleUnsort,
+  handleReset,
 }: ControlPanelProps) {
   const router = useRouter();
 
@@ -42,7 +40,7 @@ export default function ControlPanel({
     "QUICK",
     "RADIX",
   ];
-  const splenOptions = [
+  const magnitudeOptions = [
     <LuSignalLow key={0} />,
     <LuSignalMedium key={1} />,
     <LuSignalHigh key={2} />,
@@ -50,11 +48,13 @@ export default function ControlPanel({
   ];
 
   const handleSelectAlgorithm = (algorithm: Algorithm) => {
-    router.push(`?sort=${algorithm}&splen=${splenParam}`);
+    router.push(`?algorithm=${algorithm}&magnitude=${magnitudeParam}`);
   };
-  const handleSelectSplen = (splen: Splen) => {
+  const handleSelectMagnitude = (magnitude: Magnitude) => {
     router.push(
-      sortParam ? `?sort=${sortParam}&splen=${splen}` : `?splen=${splen}`,
+      algorithmParam
+        ? `?algorithm=${algorithmParam}&magnitude=${magnitude}`
+        : `?magnitude=${magnitude}`,
     );
   };
 
@@ -62,9 +62,10 @@ export default function ControlPanel({
     <div className="menu rounded-box absolute left-1/2 z-50 my-3 flex w-max -translate-x-1/2 transform items-center justify-around bg-base-200 bg-opacity-80 px-3 md:left-2 md:m-3 md:transform-none">
       <div className="flex items-center">
         <select
+          aria-label="Select an algorithm"
           onChange={(e) => handleSelectAlgorithm(e.target.value as Algorithm)}
           className="select select-sm m-2 w-fit"
-          defaultValue={sortParam ? sortParam : "default"}
+          defaultValue={algorithmParam ? algorithmParam : "default"}
         >
           <option value="default" disabled>
             Select an algorithm
@@ -76,11 +77,11 @@ export default function ControlPanel({
             </option>
           ))}
         </select>
-        <li className={clsx(sortParam === null && "disabled")}>
+        <li className={clsx(algorithmParam === null && "disabled")}>
           <button
             onClick={handleAnimate}
-            className={clsx(sortParam === null && "cursor-not-allowed")}
-            disabled={sortParam === null}
+            className={clsx(algorithmParam === null && "cursor-not-allowed")}
+            disabled={algorithmParam === null}
           >
             <LuPlay />
             Sort
@@ -89,15 +90,15 @@ export default function ControlPanel({
       </div>
       <ul className="flex w-full justify-between">
         <li>
-          <button onClick={handleUnsort}>
+          <button onClick={handleReset}>
             <LuUndo2 />
-            Unsort array
+            Reset array
           </button>
         </li>
         <li>
           <button
             onClick={() => {
-              handleRandomize(arrayLength);
+              handleRandomize();
             }}
           >
             <LuRotateCcw />
@@ -111,12 +112,15 @@ export default function ControlPanel({
           Length
         </span>
         <div className="join">
-          {splenOptions.map((option, index) => (
+          {magnitudeOptions.map((option, index) => (
             <button
-              onClick={() => handleSelectSplen(index.toString() as Splen)}
+              aria-label={`Set array to length and speed level ${option}`}
+              onClick={() =>
+                handleSelectMagnitude(index.toString() as Magnitude)
+              }
               className={clsx(
                 "btn btn-outline join-item btn-sm text-xl",
-                parseInt(splenParam as string) === index && "btn-active",
+                parseInt(magnitudeParam as string) === index && "btn-active",
               )}
               key={index}
             >

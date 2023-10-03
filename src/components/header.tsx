@@ -9,6 +9,7 @@ export default function header({ home }: { home?: boolean }) {
     <header className="navbar absolute bg-base-100">
       <div className="navbar-start">
         <a
+          aria-label="Github repository this website's source code"
           href="https://github.com/qkrwns/algorithm-visualizer"
           target="_blank"
           className="btn btn-circle btn-ghost text-xl"
@@ -20,7 +21,7 @@ export default function header({ home }: { home?: boolean }) {
         <div className="navbar-center">
           <div className="dropdown">
             <h1 className="btn btn-ghost text-xl normal-case" tabIndex={0}>
-              <span className="text-accent-focus">{titlePrefix}</span>
+              <span className="text-accent">{titlePrefix}</span>
               visualizer
             </h1>
             <ul
@@ -35,7 +36,10 @@ export default function header({ home }: { home?: boolean }) {
         </div>
       )}
       <div className="navbar-end">
-        <button className="btn btn-circle btn-ghost text-xl">
+        <button
+          aria-label="Information about this page"
+          className="btn btn-circle btn-ghost text-xl"
+        >
           <LuInfo />
         </button>
         <ThemeToggle />

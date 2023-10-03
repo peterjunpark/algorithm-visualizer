@@ -2,14 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import clsx from "clsx";
-import { LuChevronsDown } from "react-icons/lu";
+import { clsx } from "clsx";
 
 export default function Home() {
   const [titleIsClicked, setTitleIsClicked] = useState(false);
 
   const pages = [
-    ["sorting", "/sorting?splen=2"],
+    ["sorting", "/sorting?magnitude=2"],
     ["pathfinding", "/pathfinding"],
   ];
 

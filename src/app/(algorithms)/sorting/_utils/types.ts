@@ -11,4 +11,4 @@ export type Algorithm =
   | "QUICK"
   | "RADIX";
 
-export type Splen = "0" | "1" | "2" | "3";
+export type Magnitude = "0" | "1" | "2" | "3";

@@ -18,6 +18,7 @@ export default function ThemeToggle() {
     <>
       {theme === "business" ? (
         <button
+          aria-label="Toggle dark mode"
           className="btn btn-circle btn-ghost text-xl"
           onClick={() => setTheme("corporate")}
         >
@@ -25,6 +26,7 @@ export default function ThemeToggle() {
         </button>
       ) : (
         <button
+          aria-label="Toggle light mode"
           className="btn btn-circle btn-ghost text-xl"
           onClick={() => {
             setTheme("business");
