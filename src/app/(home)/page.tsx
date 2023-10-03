@@ -8,7 +8,7 @@ export default function Home() {
   const [titleIsClicked, setTitleIsClicked] = useState(false);
 
   const pages = [
-    ["sorting", "/sorting?magnitude=2"],
+    ["sorting", "/sorting?magnitude=med"],
     ["pathfinding", "/pathfinding"],
   ];
 

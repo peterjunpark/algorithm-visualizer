@@ -1,6 +1,4 @@
-"use client";
-
-import React from "react";
+import React, { memo } from "react";
 import { clsx } from "clsx";
 import { useRouter } from "next/navigation";
 import type { Algorithm, Magnitude } from "../_utils/types";
@@ -12,10 +10,10 @@ import {
   LuSignal,
   LuSignalHigh,
   LuSignalMedium,
-  LuSignalLow,
 } from "react-icons/lu";
 
 type ControlPanelProps = {
+  isSorting: boolean;
   magnitudeParam: Magnitude;
   algorithmParam: Algorithm | null;
   handleAnimate: () => void;
@@ -23,7 +21,8 @@ type ControlPanelProps = {
   handleReset: () => void;
 };
 
-export default function ControlPanel({
+export default memo(function ControlPanel({
+  isSorting,
   algorithmParam,
   magnitudeParam,
   handleAnimate,
@@ -40,11 +39,10 @@ export default function ControlPanel({
     "QUICK",
     "RADIX",
   ];
-  const magnitudeOptions = [
-    <LuSignalLow key={0} />,
-    <LuSignalMedium key={1} />,
-    <LuSignalHigh key={2} />,
-    <LuSignal key={3} />,
+  const magnitudeOptions: { param: Magnitude; icon: React.JSX.Element }[] = [
+    { param: "low", icon: <LuSignalMedium key="low" /> },
+    { param: "med", icon: <LuSignalHigh key="med" /> },
+    { param: "high", icon: <LuSignal key="high" /> },
   ];
 
   const handleSelectAlgorithm = (algorithm: Algorithm) => {
@@ -57,6 +55,8 @@ export default function ControlPanel({
         : `?magnitude=${magnitude}`,
     );
   };
+
+  console.log("panel");
 
   return (
     <div className="menu rounded-box absolute left-1/2 z-50 my-3 flex w-max -translate-x-1/2 transform items-center justify-around bg-base-200 bg-opacity-80 px-3 md:left-2 md:m-3 md:transform-none">
@@ -111,24 +111,23 @@ export default function ControlPanel({
           <LuRuler />
           Length
         </span>
-        <div className="join">
+        <div className="join mt-1">
           {magnitudeOptions.map((option, index) => (
             <button
-              aria-label={`Set array to length and speed level ${option}`}
-              onClick={() =>
-                handleSelectMagnitude(index.toString() as Magnitude)
-              }
+              aria-label={`Set array to length and speed level ${option.param}`}
+              onClick={() => handleSelectMagnitude(option.param as Magnitude)}
               className={clsx(
-                "btn btn-outline join-item btn-sm text-xl",
-                parseInt(magnitudeParam as string) === index && "btn-active",
+                "btn btn-outline join-item btn-sm w-[3.82rem] text-xl",
+                magnitudeParam === option.param && "btn-active",
               )}
+              disabled={isSorting}
               key={index}
             >
-              {option}
+              {option.icon}
             </button>
           ))}
         </div>
       </div>
     </div>
   );
-}
+});

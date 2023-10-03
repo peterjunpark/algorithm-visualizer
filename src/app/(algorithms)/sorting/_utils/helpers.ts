@@ -1,33 +1,29 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-export function getSortingOptions(
+export function getMagnitudeOptions(
   magnitudeParam: string | unknown,
   algorithmParam: string | null,
   router: AppRouterInstance,
 ) {
-  let animationInterval = 500;
+  let animationInterval = 0;
   let arrayLength = 16;
 
   switch (magnitudeParam) {
-    case "0":
+    case "low":
+      animationInterval = 100;
       break;
-    case "1":
-      animationInterval -= 100;
+    case "med":
+      animationInterval = 20;
       arrayLength *= 3;
       break;
-    case "2":
-      animationInterval -= 200;
+    case "high":
       arrayLength *= 9;
-      break;
-    case "3":
-      animationInterval -= 300;
-      arrayLength *= 27;
       break;
     default:
       router.replace(
         algorithmParam
-          ? `?algorithm=${algorithmParam}&magnitude=2`
-          : `?magnitude=2`,
+          ? `?algorithm=${algorithmParam}&magnitude=med`
+          : `?magnitude=med`,
       );
   }
 
