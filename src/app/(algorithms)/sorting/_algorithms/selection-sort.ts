@@ -1,8 +1,9 @@
 import { delay } from "@/lib/utils";
+import type { ArrayElement } from "../_utils/types";
 
 export const selectionSort = async (
-  array: number[],
-  setArray: React.Dispatch<React.SetStateAction<number[]>>,
+  array: ArrayElement[],
+  setArray: React.Dispatch<React.SetStateAction<ArrayElement[]>>,
   setStatus: React.Dispatch<React.SetStateAction<boolean>>,
   animationInterval: number,
 ) => {
@@ -13,7 +14,7 @@ export const selectionSort = async (
     await delay(animationInterval);
 
     for (let j = i + 1; j < arr.length; j++) {
-      if (arr[j] < arr[idxOfSmallest]) {
+      if (arr[j].value < arr[idxOfSmallest].value) {
         idxOfSmallest = j;
         await delay(animationInterval);
       }

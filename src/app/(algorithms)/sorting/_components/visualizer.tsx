@@ -1,21 +1,35 @@
 import React from "react";
 import { clsx } from "clsx";
+import type { ArrayElement } from "../_utils/types";
 
 type VisualizerProps = {
-  array: number[];
+  array: ArrayElement[];
 };
 
 export default function Visualizer({ array }: VisualizerProps) {
   return (
     <div className="mx-2 flex h-full items-end">
-      {array.map((value, index) => (
+      {array.map((element, index) => (
         <div
           key={index}
           className={clsx(
             "w-full rounded-t-md opacity-80",
-            index % 2 === 0 ? "bg-primary" : "bg-primary-focus",
+            { "bg-primary": element.color === "UNSORTED" && index % 2 === 0 },
+            {
+              "bg-primary-focus":
+                element.color === "UNSORTED" && index % 2 === 1,
+            },
+            { "bg-secondary": element.color === "COMPARED" && index % 2 === 0 },
+            {
+              "bg-secondary-focus":
+                element.color === "COMPARED" && index % 2 === 1,
+            },
+            { "bg-accent": element.color === "SORTED" && index % 2 === 0 },
+            {
+              "bg-accent-focus": element.color === "SORTED" && index % 2 === 1,
+            },
           )}
-          style={{ height: `${value}%` }} // Easier to use this instead of Tailwind.
+          style={{ height: `${element.value}%` }} // Easier to use this instead of Tailwind.
         ></div>
       ))}
     </div>
