@@ -9,7 +9,7 @@ export default function Home() {
 
   const pages = [
     ["sorting", "/sorting?magnitude=med"],
-    ["pathfinding", "/pathfinding"],
+    // ["pathfinding", "/pathfinding"],
   ];
 
   return (
