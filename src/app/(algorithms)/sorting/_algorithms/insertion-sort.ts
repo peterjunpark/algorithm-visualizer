@@ -12,7 +12,7 @@ export const insertionSort = async ({
   setStatus,
   animationInterval,
 }: AlgorithmProps) => {
-  setStatus(true);
+  setStatus({ sorting: true, sorted: false });
   // Start with the first element in the sorted portion of the array.
   visualizeSorted(array[0]);
 
@@ -37,5 +37,5 @@ export const insertionSort = async ({
   // Handle edge case.
   visualizeSorted(array[array.length - 1]);
 
-  setStatus(false);
+  setStatus({ sorting: false, sorted: true });
 };

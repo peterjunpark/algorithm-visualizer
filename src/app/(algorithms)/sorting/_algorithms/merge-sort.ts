@@ -12,7 +12,7 @@ export const mergeSort = async ({
   setStatus,
   animationInterval,
 }: AlgorithmProps) => {
-  setStatus(true);
+  setStatus({ sorting: true, sorted: false });
 
   for (let i = 0; i < array.length; i++) {
     let currSmallest = i;
@@ -32,5 +32,5 @@ export const mergeSort = async ({
     //   visualizeUncompare("UNSORTED", array[currSmallest]);
     // }
   }
-  setStatus(false);
+  setStatus({ sorting: false, sorted: true });
 };

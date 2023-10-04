@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { clsx } from "clsx";
 import { useRouter } from "next/navigation";
-import type { Algorithm, Magnitude } from "../_utils/types";
+import type { Algorithm, Magnitude, Status } from "../_utils/types";
 import {
   LuPlay,
   LuUndo2,
@@ -13,7 +13,7 @@ import {
 } from "react-icons/lu";
 
 type ControlPanelProps = {
-  status: boolean;
+  status: Status;
   magnitudeParam: Magnitude;
   algorithmParam: Algorithm | null;
   handleAnimate: () => void;
@@ -22,7 +22,7 @@ type ControlPanelProps = {
 };
 
 export default memo(function ControlPanel({
-  status: isSorting,
+  status,
   algorithmParam,
   magnitudeParam,
   handleAnimate,
@@ -64,7 +64,7 @@ export default memo(function ControlPanel({
           onChange={(e) => handleSelectAlgorithm(e.target.value as Algorithm)}
           className="select select-sm m-2 w-fit"
           defaultValue={algorithmParam ? algorithmParam : "default"}
-          disabled={isSorting}
+          disabled={status.sorting}
         >
           <option value="default" disabled>
             Select an algorithm
@@ -77,12 +77,17 @@ export default memo(function ControlPanel({
           ))}
         </select>
         <li
-          className={clsx((algorithmParam === null || isSorting) && "disabled")}
+          className={clsx(
+            (algorithmParam === null || status.sorting || status.sorted) &&
+              "disabled",
+          )}
         >
           <button
             onClick={handleAnimate}
             className={clsx(algorithmParam === null && "cursor-not-allowed")}
-            disabled={algorithmParam === null || isSorting}
+            disabled={
+              algorithmParam === null || status.sorting || status.sorted
+            }
           >
             <LuPlay />
             Sort
@@ -90,17 +95,18 @@ export default memo(function ControlPanel({
         </li>
       </div>
       <ul className="flex w-full justify-between">
-        <li>
-          <button onClick={handleReset}>
+        <li className={clsx(status.sorting && "disabled")}>
+          <button onClick={handleReset} disabled={status.sorting}>
             <LuUndo2 />
             Reset array
           </button>
         </li>
-        <li>
+        <li className={clsx(status.sorting && "disabled")}>
           <button
             onClick={() => {
               handleRandomize();
             }}
+            disabled={status.sorting}
           >
             <LuRotateCcw />
             Randomize array
@@ -108,20 +114,16 @@ export default memo(function ControlPanel({
         </li>
       </ul>
       <div className="mb-2 mt-1 flex items-center gap-3">
-        <span className="flex items-center gap-2">
-          <LuRuler />
-          Length
-        </span>
         <div className="join mt-1">
           {magnitudeOptions.map((option, index) => (
             <button
               aria-label={`Set array to length and speed level ${option.param}`}
               onClick={() => handleSelectMagnitude(option.param as Magnitude)}
               className={clsx(
-                "btn btn-outline join-item btn-sm w-[3.82rem] text-xl",
+                "btn btn-outline join-item btn-sm w-20 text-xl",
                 magnitudeParam === option.param && "btn-active",
               )}
-              disabled={isSorting}
+              disabled={status.sorting}
               key={index}
             >
               {option.icon}

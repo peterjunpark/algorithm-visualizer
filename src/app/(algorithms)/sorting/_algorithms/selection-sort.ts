@@ -12,7 +12,7 @@ export const selectionSort = async ({
   setStatus,
   animationInterval,
 }: AlgorithmProps) => {
-  setStatus(true);
+  setStatus({ sorting: true, sorted: false });
 
   for (let i = 0; i < array.length; i++) {
     visualizeCompare(array[i]);
@@ -48,5 +48,5 @@ export const selectionSort = async ({
 
     visualizeSorted(array[i]);
   }
-  setStatus(false);
+  setStatus({ sorting: false, sorted: true });
 };

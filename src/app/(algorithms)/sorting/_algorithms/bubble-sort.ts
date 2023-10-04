@@ -12,7 +12,7 @@ export const bubbleSort = async ({
   setStatus,
   animationInterval,
 }: AlgorithmProps) => {
-  setStatus(true);
+  setStatus({ sorting: true, sorted: false });
 
   for (let i = array.length - 1; i > 0; i--) {
     let didSwap = false;
@@ -43,5 +43,5 @@ export const bubbleSort = async ({
       break;
     }
   }
-  setStatus(false);
+  setStatus({ sorting: false, sorted: true });
 };
