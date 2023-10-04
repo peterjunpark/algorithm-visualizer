@@ -84,7 +84,12 @@ export default memo(function ControlPanel({
         >
           <button
             onClick={handleAnimate}
-            className={clsx(algorithmParam === null && "cursor-not-allowed")}
+            className={clsx(
+              (algorithmParam === null || status.sorted) &&
+                "cursor-not-allowed",
+              status.sorting &&
+                "loading loading-infinity mx-[1.05rem] w-[3rem]",
+            )}
             disabled={
               algorithmParam === null || status.sorting || status.sorted
             }
