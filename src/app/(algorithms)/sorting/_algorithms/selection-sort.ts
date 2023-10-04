@@ -7,8 +7,10 @@ export const selectionSort = async ({
   setStatus,
   animationInterval,
 }: AlgorithmProps) => {
+  const arr = array.map((element) => ({ ...element }));
+
   setStatus(true);
-  const arr = [...array];
+
   for (let i = 0; i < arr.length; i++) {
     let idxOfSmallest = i;
     await delay(animationInterval);
@@ -16,6 +18,7 @@ export const selectionSort = async ({
     for (let j = i + 1; j < arr.length; j++) {
       if (arr[j].value < arr[idxOfSmallest].value) {
         idxOfSmallest = j;
+
         await delay(animationInterval);
       }
     }

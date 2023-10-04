@@ -1,4 +1,20 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import type { ArrayElement } from "./types";
+
+export function visualizeCompare(...elems: ArrayElement[]) {
+  elems.forEach((elem) => {
+    elem.color = "COMPARED";
+  });
+}
+
+export function visualizeUncompare(
+  originalColor: "UNSORTED" | "SORTED",
+  ...elems: ArrayElement[]
+) {
+  elems.forEach((elem) => {
+    elem.color = originalColor;
+  });
+}
 
 export function getMagnitudeOptions(
   magnitudeParam: string | unknown,

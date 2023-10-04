@@ -1,4 +1,5 @@
 import { delay } from "@/lib/utils";
+import { visualizeCompare, visualizeUncompare } from "../_utils/helpers";
 import type { AlgorithmProps } from "../_utils/types";
 
 export const bubbleSort = async ({
@@ -7,33 +8,34 @@ export const bubbleSort = async ({
   setStatus,
   animationInterval,
 }: AlgorithmProps) => {
+  const arr = array.map((element) => ({ ...element }));
+
   setStatus(true);
-  for (let i = array.length - 1; i > 0; i--) {
+
+  for (let i = arr.length - 1; i > 0; i--) {
     let didSwap = false;
     for (let j = 0; j < i; j++) {
-      if (array[j].value > array[j + 1].value) {
-        [array[j], array[j + 1]] = [array[j + 1], array[j]];
+      if (arr[j].value > arr[j + 1].value) {
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
         didSwap = true;
         // Visualize which elements are being compared.
-        array[j].color = "COMPARED";
-        array[j + 1].color = "COMPARED";
+        visualizeCompare(arr[j], arr[j + 1]);
         await delay(animationInterval);
         // Visualize that we're done comparing those elements.
-        array[j].color = "UNSORTED";
-        array[j + 1].color = "UNSORTED";
+        visualizeUncompare("UNSORTED", arr[j], arr[j + 1]);
         // Visualize the swap.
-        setArray([...array]);
+        setArray([...arr]);
       }
     }
     // Change the color of sorted elements.
-    array[i].color = "SORTED";
+    arr[i].color = "SORTED";
 
     // If the algorithm breaks early due to didSwap = true,
     // set the untouched portion of the array to SORTED.
     if (!didSwap) {
       while (i > 0) {
         i--;
-        array[i].color = "SORTED";
+        arr[i].color = "SORTED";
       }
       break;
     }
