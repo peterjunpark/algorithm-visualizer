@@ -19,8 +19,3 @@ export type AlgorithmProps = {
   setStatus: React.Dispatch<React.SetStateAction<boolean>>;
   animationInterval: number;
 };
-
-export type Status = {
-  sorting: boolean;
-  sorted: boolean;
-};

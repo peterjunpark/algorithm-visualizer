@@ -42,6 +42,7 @@ export const selectionSort = async ({
       [array[idxOfSmallest], array[i]] = [array[i], array[idxOfSmallest]];
       // Visualize swapping the current value to be replaced with the current smallest value
       // at the end of a cycle.
+      visualizeUncompare("UNSORTED", array[idxOfSmallest]);
       setArray([...array]);
     }
 

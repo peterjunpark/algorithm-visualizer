@@ -3,7 +3,6 @@ import {
   visualizeCompare,
   visualizeUncompare,
   visualizeSorted,
-  createWorkingCopy,
 } from "../_utils/helpers";
 import type { AlgorithmProps } from "../_utils/types";
 
@@ -13,26 +12,24 @@ export const mergeSort = async ({
   setStatus,
   animationInterval,
 }: AlgorithmProps) => {
-  const arr = createWorkingCopy(array);
-
   setStatus(true);
 
-  for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < array.length; i++) {
     let currSmallest = i;
 
-    visualizeCompare(arr[i]);
+    visualizeCompare(array[i]);
     await delay(animationInterval);
-    setArray(...[arr]);
-    visualizeUncompare("UNSORTED", arr[i]);
+    setArray(...[array]);
+    visualizeUncompare("UNSORTED", array[i]);
 
-    // for (let j = i + 1; i < arr.length; j++) {
+    // for (let j = i + 1; i < array.length; j++) {
     //   currSmallest++;
-    //   // if (arr[j].value < arr[currSmallest].value) {
+    //   // if (array[j].value < array[currSmallest].value) {
     //   //   currSmallest = j;
     //   // }
-    //   visualizeCompare(arr[currSmallest]);
+    //   visualizeCompare(array[currSmallest]);
     //   await delay(animationInterval);
-    //   visualizeUncompare("UNSORTED", arr[currSmallest]);
+    //   visualizeUncompare("UNSORTED", array[currSmallest]);
     // }
   }
   setStatus(false);

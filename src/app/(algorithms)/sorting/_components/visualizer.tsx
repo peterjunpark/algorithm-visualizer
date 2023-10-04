@@ -19,9 +19,12 @@ export default function Visualizer({ array }: VisualizerProps) {
               "bg-primary-focus":
                 element.color === "UNSORTED" && index % 2 === 1,
             },
-            { "bg-secondary": element.color === "COMPARED" && index % 2 === 0 },
             {
-              "bg-secondary-focus":
+              "bg-base-content opacity-75":
+                element.color === "COMPARED" && index % 2 === 0,
+            },
+            {
+              "bg-base-content opacity-60":
                 element.color === "COMPARED" && index % 2 === 1,
             },
             { "bg-accent": element.color === "SORTED" && index % 2 === 0 },
