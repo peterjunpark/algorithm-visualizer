@@ -13,7 +13,7 @@ import {
 } from "react-icons/lu";
 
 type ControlPanelProps = {
-  isSorting: boolean;
+  status: boolean;
   magnitudeParam: Magnitude;
   algorithmParam: Algorithm | null;
   handleAnimate: () => void;
@@ -22,7 +22,7 @@ type ControlPanelProps = {
 };
 
 export default memo(function ControlPanel({
-  isSorting,
+  status: isSorting,
   algorithmParam,
   magnitudeParam,
   handleAnimate,
@@ -56,8 +56,6 @@ export default memo(function ControlPanel({
     );
   };
 
-  console.log("panel");
-
   return (
     <div className="menu rounded-box absolute left-1/2 z-50 my-3 flex w-max -translate-x-1/2 transform items-center justify-around bg-base-200 bg-opacity-80 px-3 md:left-2 md:m-3 md:transform-none">
       <div className="flex items-center">
@@ -66,6 +64,7 @@ export default memo(function ControlPanel({
           onChange={(e) => handleSelectAlgorithm(e.target.value as Algorithm)}
           className="select select-sm m-2 w-fit"
           defaultValue={algorithmParam ? algorithmParam : "default"}
+          disabled={isSorting}
         >
           <option value="default" disabled>
             Select an algorithm
@@ -77,11 +76,13 @@ export default memo(function ControlPanel({
             </option>
           ))}
         </select>
-        <li className={clsx(algorithmParam === null && "disabled")}>
+        <li
+          className={clsx((algorithmParam === null || isSorting) && "disabled")}
+        >
           <button
             onClick={handleAnimate}
             className={clsx(algorithmParam === null && "cursor-not-allowed")}
-            disabled={algorithmParam === null}
+            disabled={algorithmParam === null || isSorting}
           >
             <LuPlay />
             Sort

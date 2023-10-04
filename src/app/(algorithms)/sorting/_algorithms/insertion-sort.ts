@@ -1,27 +1,40 @@
 import { delay } from "@/lib/utils";
-import type { ArrayElement } from "../_utils/types";
+import type { AlgorithmProps } from "../_utils/types";
 
-export const insertionSort = async (
-  array: ArrayElement[],
-  setArray: React.Dispatch<React.SetStateAction<ArrayElement[]>>,
-  setStatus: React.Dispatch<React.SetStateAction<boolean>>,
-  animationInterval: number,
-) => {
+export const insertionSort = async ({
+  array,
+  setArray,
+  setStatus,
+  animationInterval,
+}: AlgorithmProps) => {
   setStatus(true);
-  const arr = [...array];
-  for (let i = 1; i < arr.length; i++) {
-    let curr = arr[i].value;
-    let j = i - 1;
+  // Start with the first element in the sorted portion of the array.
+  array[0].color = "SORTED";
 
-    while (j >= 0 && arr[j].value > curr) {
-      arr[j + 1] = arr[j];
-      // animation
+  for (let i = 1; i < array.length; i++) {
+    let curr = array[i].value;
+    let j = i - 1;
+    // Expand the sorted portion of the array.k
+    array[j].color = "SORTED";
+
+    while (j >= 0 && array[j].value > curr) {
+      array[j + 1].value = array[j].value;
+      // Visualize which elements are begin compared
+      array[j].color = "COMPARED";
+      array[j + 1].color = "COMPARED";
       await delay(animationInterval);
-      arr[j].color = "COMPARED"; // Update color here
-      setArray([...arr]);
+      // Visualize that we're done comparing these elements.
+      // These elements will be in the sorted portion of the array.
+      array[j].color = "SORTED";
+      array[j + 1].color = "SORTED";
+      // Visualize the swap.
+      setArray([...array]);
       j--;
     }
-    arr[j + 1].value = curr;
+    array[j + 1].value = curr;
   }
+  // Handle edge case.
+  array[array.length - 1].color = "SORTED";
+
   setStatus(false);
 };

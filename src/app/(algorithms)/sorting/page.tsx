@@ -21,52 +21,50 @@ export default function SortingPage() {
     algorithmParam,
     router,
   );
-  const {
-    array,
-    setArray,
-    arrayRef,
-    status,
-    setStatus,
-    handleRandomize,
-    handleReset,
-  } = useSortingAlgorithm();
+  const { array, setArray, status, setStatus, handleRandomize, handleReset } =
+    useSortingAlgorithm();
 
   useEffect(() => {
     handleRandomize(arrayLength);
   }, [arrayLength, handleRandomize]);
 
-  const handleBubbleSort = useCallback(() => {
-    bubbleSort(array, setArray, setStatus, animationInterval);
-  }, [array, setArray, setStatus, animationInterval]);
-
-  const handleInsertionSort = useCallback(() => {
-    insertionSort(array, setArray, setStatus, animationInterval);
-  }, [array, setArray, setStatus, animationInterval]);
-
-  const handleSelectionSort = useCallback(() => {
-    selectionSort(array, setArray, setStatus, animationInterval);
-  }, [array, setArray, setStatus, animationInterval]);
+  const getSelectedAlgorithm = useCallback(() => {
+    const algorithmProps = { array, setArray, setStatus, animationInterval };
+    switch (algorithmParam) {
+      case "BUBBLE":
+        return () => {
+          bubbleSort(algorithmProps);
+        };
+      case "INSERTION":
+        return () => {
+          insertionSort(algorithmProps);
+        };
+      case "SELECTION":
+        return () => {
+          selectionSort(algorithmProps);
+        };
+      case "MERGE":
+        return () => {
+          alert("merge");
+        };
+      case "QUICK":
+        return () => {
+          alert("quick");
+        };
+      case "RADIX":
+        return () => {
+          alert("radix");
+        };
+    }
+  }, [array, setArray, setStatus, animationInterval, algorithmParam]);
 
   return (
     <main className="h-full pt-14">
       <ControlPanel
-        isSorting={status}
+        status={status}
         algorithmParam={algorithmParam ? (algorithmParam as Algorithm) : null}
         magnitudeParam={magnitudeParam as Magnitude}
-        handleAnimate={
-          algorithmParam === "BUBBLE"
-            ? handleBubbleSort
-            : algorithmParam === "INSERTION"
-            ? handleInsertionSort
-            : handleSelectionSort
-          // : algorithmParam === "SELECTION"
-          //   ? handleSelectionSort
-          //   : algorithmParam === "MERGE"
-          //   ? handleMergeSort
-          //   : algorithmParam === "QUICK"
-          //   ? handleQuickSort
-          //   : handleRadixSort
-        }
+        handleAnimate={getSelectedAlgorithm() as () => void}
         handleRandomize={() => {
           handleRandomize(arrayLength);
         }}

@@ -1,12 +1,12 @@
 import { delay } from "@/lib/utils";
-import type { ArrayElement } from "../_utils/types";
+import type { AlgorithmProps } from "../_utils/types";
 
-export const selectionSort = async (
-  array: ArrayElement[],
-  setArray: React.Dispatch<React.SetStateAction<ArrayElement[]>>,
-  setStatus: React.Dispatch<React.SetStateAction<boolean>>,
-  animationInterval: number,
-) => {
+export const selectionSort = async ({
+  array,
+  setArray,
+  setStatus,
+  animationInterval,
+}: AlgorithmProps) => {
   setStatus(true);
   const arr = [...array];
   for (let i = 0; i < arr.length; i++) {

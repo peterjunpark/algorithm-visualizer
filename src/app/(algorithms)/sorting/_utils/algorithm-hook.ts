@@ -13,12 +13,23 @@ export function useSortingAlgorithm() {
       newArray.push({ value: rng(1, 100), color: "UNSORTED" } as ArrayElement);
     }
 
+    setStatus(false);
     setArray(newArray);
     arrayRef.current = [...newArray];
   }, []);
 
   const handleReset = useCallback(() => {
-    setArray([...arrayRef.current]);
+    // Create a deep copy of the original arrayRef.current
+    const originalArray = arrayRef.current.map((element) => ({ ...element }));
+
+    // Need to manually reset all the colors
+    // because I'm sorting the array in-place.
+    originalArray.forEach((element) => {
+      element.color = "UNSORTED";
+    });
+
+    setStatus(false);
+    setArray(originalArray);
   }, []);
 
   return {
