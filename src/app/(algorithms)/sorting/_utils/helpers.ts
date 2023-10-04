@@ -16,13 +16,19 @@ export function visualizeUncompare(
   });
 }
 
+export function visualizeSorted(...elems: ArrayElement[]) {
+  elems.forEach((elem) => {
+    elem.color = "SORTED";
+  });
+}
+
 export function getMagnitudeOptions(
   magnitudeParam: string | unknown,
   algorithmParam: string | null,
   router: AppRouterInstance,
 ) {
   let animationInterval = 0;
-  let arrayLength = 12;
+  let arrayLength = 14;
 
   switch (magnitudeParam) {
     case "low":

@@ -10,6 +10,7 @@ import Visualizer from "./_components/visualizer";
 import { bubbleSort } from "./_algorithms/bubble-sort";
 import { insertionSort } from "./_algorithms/insertion-sort";
 import { selectionSort } from "./_algorithms/selection-sort";
+import { mergeSort } from "./_algorithms/merge-sort";
 
 export default function SortingPage() {
   const router = useRouter();
@@ -45,7 +46,7 @@ export default function SortingPage() {
         };
       case "MERGE":
         return () => {
-          alert("merge");
+          mergeSort(algorithmProps);
         };
       case "QUICK":
         return () => {
@@ -71,7 +72,6 @@ export default function SortingPage() {
         // Set the current display to the initial randomized array stored in arrayRef.
         handleReset={handleReset}
       />
-
       <Visualizer array={array} />
     </main>
   );
