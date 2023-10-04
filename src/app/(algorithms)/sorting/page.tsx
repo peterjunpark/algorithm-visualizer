@@ -2,12 +2,14 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSortingAlgorithm } from "./_utils/algorithm-hook";
 import { getMagnitudeOptions } from "./_utils/helpers";
 import type { Algorithm, Magnitude } from "./_utils/types";
 import ControlPanel from "./_components/control-panel";
 import Visualizer from "./_components/visualizer";
-import { rng, delay } from "@/lib/utils";
 import { bubbleSort } from "./_algorithms/bubble-sort";
+import { insertionSort } from "./_algorithms/insertion-sort";
+import { selectionSort } from "./_algorithms/selection-sort";
 
 export default function SortingPage() {
   const router = useRouter();
@@ -19,44 +21,45 @@ export default function SortingPage() {
     algorithmParam,
     router,
   );
-
-  const [isSorting, setIsSorting] = useState<boolean>(false);
-  const [array, setArray] = useState<number[]>([]); // This state controls what is displayed on the page.
-  const arrayRef = useRef<number[]>([]); // This stores the initial array before sorting. Useful for resetting the array.
-
-  const handleRandomize = useCallback(() => {
-    const newArray: number[] = [];
-    for (let i = 0; i < arrayLength; i++) {
-      newArray.push(rng(1, 100));
-    }
-
-    console.log("randomize");
-
-    setArray(newArray);
-    arrayRef.current = [...newArray];
-  }, [arrayLength]);
+  const {
+    array,
+    setArray,
+    arrayRef,
+    status,
+    setStatus,
+    handleRandomize,
+    handleReset,
+  } = useSortingAlgorithm();
 
   useEffect(() => {
-    handleRandomize();
+    handleRandomize(arrayLength);
   }, [arrayLength, handleRandomize]);
 
   const handleBubbleSort = useCallback(() => {
-    bubbleSort(array, setArray, setIsSorting, animationInterval);
-  }, [array, animationInterval]);
+    bubbleSort(array, setArray, setStatus, animationInterval);
+  }, [array, setArray, setStatus, animationInterval]);
+
+  const handleInsertionSort = useCallback(() => {
+    insertionSort(array, setArray, setStatus, animationInterval);
+  }, [array, setArray, setStatus, animationInterval]);
+
+  const handleSelectionSort = useCallback(() => {
+    selectionSort(array, setArray, setStatus, animationInterval);
+  }, [array, setArray, setStatus, animationInterval]);
 
   return (
     <main className="h-full pt-14">
       <ControlPanel
-        isSorting={isSorting}
+        isSorting={status}
         algorithmParam={algorithmParam ? (algorithmParam as Algorithm) : null}
         magnitudeParam={magnitudeParam as Magnitude}
         handleAnimate={
-          handleBubbleSort
-          // algorithmParam === "BUBBLE"
-          //   ? handleBubbleSort
-          //   : algorithmParam === "INSERTION"
-          //   ? handleInsertionSort
-          //   : algorithmParam === "SELECTION"
+          algorithmParam === "BUBBLE"
+            ? handleBubbleSort
+            : algorithmParam === "INSERTION"
+            ? handleInsertionSort
+            : handleSelectionSort
+          // : algorithmParam === "SELECTION"
           //   ? handleSelectionSort
           //   : algorithmParam === "MERGE"
           //   ? handleMergeSort
@@ -64,10 +67,11 @@ export default function SortingPage() {
           //   ? handleQuickSort
           //   : handleRadixSort
         }
-        handleRandomize={handleRandomize}
+        handleRandomize={() => {
+          handleRandomize(arrayLength);
+        }}
         // Set the current display to the initial randomized array stored in arrayRef.
-        // handleReset={() => setArray([...arrayRef.current])}
-        handleReset={() => setIsSorting(false)}
+        handleReset={handleReset}
       />
 
       <Visualizer array={array} />
