@@ -28,7 +28,7 @@ export function getMagnitudeOptions(
   router: AppRouterInstance,
 ) {
   let animationInterval = 0;
-  let arrayLength = 14;
+  let arrayLength = 12;
 
   switch (magnitudeParam) {
     case "low":
