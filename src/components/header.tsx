@@ -11,7 +11,7 @@ export default function header({ home }: { home?: boolean }) {
       <div className="navbar-start">
         <a
           aria-label="Github repository this website's source code"
-          href="https://github.com/qkrwns/algorithm-visualizer"
+          href="https://github.com/peterjunpark/algorithm-visualizer"
           target="_blank"
           className="btn btn-circle btn-ghost text-xl"
         >
