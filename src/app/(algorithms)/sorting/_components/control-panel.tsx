@@ -6,7 +6,6 @@ import {
   LuPlay,
   LuUndo2,
   LuRotateCcw,
-  LuRuler,
   LuSignal,
   LuSignalHigh,
   LuSignalMedium,
@@ -87,8 +86,6 @@ export default memo(function ControlPanel({
             className={clsx(
               (algorithmParam === null || status.sorted) &&
                 "cursor-not-allowed",
-              status.sorting &&
-                "loading loading-infinity mx-[1.05rem] w-[3rem]",
             )}
             disabled={
               algorithmParam === null || status.sorting || status.sorted
